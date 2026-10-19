@@ -1,0 +1,128 @@
+REAPER TERRAIN HEIGHT — BASE44 HANDOFF
+====================================
+
+WHAT THIS IS
+Four sampled DayZ ground-height datasets and a standalone JavaScript version
+of the existing Reaper lookup. No Nitrado calls, account access, secret keys,
+database connection, raw PC captures or game-server installation are needed.
+
+This is a handoff, not an already-deployed Base44 integration.
+No changes have been made to your Hub or production Reaper app.
+
+DOWNLOADS
+The full handoff is split into two ordinary ZIPs to fit download limits.
+Extract BOTH into the same parent folder; they combine into one
+Reaper-Terrain-Handoff folder. These are not multipart ZIP volumes.
+Part 1 contains code, instructions and three maps.
+Part 2 adds the Nasdara binary to that same folder.
+
+SEND TO BASE44
+1. Paste BASE44-PROMPT.txt into Base44.
+2. Supply the code and terrain-heightmaps folder from BOTH download ZIPs.
+3. If Base44 cannot accept a large ZIP or binary uploads, supply the small code
+   ZIP first. Ask it to identify its supported durable file-storage method,
+   then upload the JSON + F32 pairs there. Do not paste binaries into chat.
+4. Ask Base44 to verify its published environment, not just its preview.
+
+FILES
+terrain-height.mjs     Actual lookup algorithm, transpiled from Reaper.
+shop-position.mjs      Coordinate parsing/error helper; no external packages.
+terrain-heightmaps/    Exactly four JSON manifests and four binary grids.
+verify.mjs             Standalone Node checks of integrity and lookup behaviour.
+example.mjs            Small command-line example.
+reference/             Original TypeScript and source dataset notes.
+                       Source file paths in reference notes refer to Reaper,
+                       not to runnable commands in this handoff.
+
+TRY LOCALLY (Node.js 20 or newer; no npm install)
+  node verify.mjs
+  node example.mjs nasdara 11933 11163
+
+Example result: ground Y approximately 169.63999938964844 metres.
+This is terrain Y, before any separate item-placement lift.
+
+HOW IT WORKS
+1. Normalize the map name.
+2. Validate manifest approval, dimensions, extent and interpolation type.
+3. Verify binary byte count and SHA-256 once per map/process.
+4. Convert horizontal world X/Z into grid row/column.
+5. Read four surrounding little-endian Float32 samples using explicit offsets.
+6. Interpolate using the manifest method (these maps use diagonal-bc).
+7. Return signed terrain elevation, or a placement-safe result rejecting
+   negative ground elevations. No unknown-height-to-zero fallback.
+
+Map                         World width    Grid spacing   Binary size
+Chernarus / chernarusplus    15,360 m       7.5 m          16,793,604 bytes
+Livonia / enoch              12,800 m       6.25 m         16,793,604 bytes
+Sakhal                      15,360 m       3.75 m         67,141,636 bytes
+Nasdara / Badlands           16,384 m       4 m            67,141,636 bytes
+
+The grids together are approximately 160.1 MiB uncompressed.
+
+API
+  createTerrainHeightStore(directoryURL)
+  store.terrainHeightStatus(map)
+  store.lookupTerrainElevation(map, x, z)  // signed; includes seabed
+  store.lookupTerrainHeight(map, x, z)     // rejects below sea level
+  store.close()                           // after all in-flight reads finish
+
+There are default lookup exports using the adjacent terrain-heightmaps folder.
+Stores validate lazily on first use. Missing/invalid results are cached until
+the store is closed/recreated or the service restarts.
+
+INTEGRATION RULES
+- DayZ X and Z are horizontal world coordinates; Y is physical height.
+- Some existing tools call horizontal Z "Y", and height "Z". Inspect each tool
+  and adapt its inputs explicitly. Do not rename or swap blindly.
+- Blank manual height means calculate ground height; explicit 0 is valid.
+- A selected full recorded in-game XYZ position keeps its actual height.
+- Keep item-specific spawn offsets separate from terrain elevation.
+- For a top-left image origin, a full-world unrotated map commonly uses
+  x = pixelX / imageWidth * worldWidth
+  z = (1 - pixelY / imageHeight) * worldWidth
+  This is NOT universal: confirm the tile library's bounds, origin, projection,
+  zoom and rotation using known landmarks before applying that conversion.
+- Validate finite coordinates and map boundaries on the backend too.
+- Never trust a caller-supplied map name as a file path.
+- Return helpful errors for missing data; never return a fabricated zero.
+- Batch/bound bulk work; don't make one full-grid download per marker.
+- Do not load all 160 MiB into every mobile visitor's browser.
+
+BASE44 RUNTIME ADAPTATION
+The supplied code requires Node's filesystem and crypto modules. This does NOT
+prove that Base44's backend supports them. Have Base44 inspect its actual runtime.
+If unsupported, port the same indexing/interpolation into its supported backend
+and use durable binary storage with efficient reads/caching. Verify binary
+integrity before serving lookups; authenticate/limit expensive endpoints as needed.
+The original algorithm remains the reference for parity checks.
+
+WHAT IT DOES NOT KNOW
+Terrain only: no building floors, roofs, bridges, player-built structures,
+pond surfaces or safe walking/delivery access. Keep manual height for these.
+Below-sea-level terrain is not a complete water-surface model.
+No claim of building-height, collision or interior geometry support.
+Terrain height alone must not be treated as conclusive cheating evidence.
+
+DATA PROVENANCE AND LIMITS
+Official-map grids came from an Experimental PC engine export. Nasdara came
+from the native PC export. Exact source/version and sampled error measurements
+are retained in each manifest. Each dataset had 5,000 independent engine checks
+across 100 regions, plus selected owner-confirmed in-game ground placements.
+Nasdara's three console placements shared an elevation; they do NOT prove every
+point on the map or every future console/game version.
+
+The included regression samples demonstrate implementation parity, not new
+independent measurements. Recheck affected terrain after game/map updates.
+No third-party reuse/redistribution license is established by this handoff;
+confirm applicable DayZ/map terms before publicly redistributing these datasets.
+Prefer server-side lookups over publishing the raw grids for public download.
+
+RELEASE CHECKLIST FOR BASE44
+- All four datasets installed in persistent published storage.
+- SHA-256 and byte-size checks pass.
+- Tests match included reference samples and independent known landmarks.
+- World/pixel coordinate orientation is correct.
+- Blank height, explicit zero, manual XYZ, map edges and errors tested.
+- Mobile/tablet/desktop controls usable; no huge browser downloads.
+- Published backend can actually read all four datasets after a fresh deploy.
+- Existing maps/tiles/markers and other tools have not been changed unexpectedly.

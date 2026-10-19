@@ -1,0 +1,36 @@
+Please integrate the attached Reaper terrain-height handoff into my existing
+Do or Die Hub tools and interactive maps.
+
+Read START-HERE.txt first. Inspect my existing code and your actual backend
+runtime/storage capabilities before implementing. Do not redesign the site,
+change branding, replace tiles/markers or weaken authorization.
+
+Use ONE shared terrain service for Chernarus, Livonia, Sakhal and Nasdara.
+Use the attached real manifest/binary pairs; never invent data. The supplied
+standalone Node lookup is the reference algorithm. If your runtime is not Node,
+port it to your supported backend and verify parity using reference-samples.json.
+Do not assume node:fs exists in your backend functions.
+
+Support automatic ground height when a tool's height is blank, preserving
+explicit zero and manual/full recorded XYZ. Normalize DayZ horizontal X/Z and
+physical Y correctly, including tools whose field labels differ. Keep spawn
+offsets separate. Distinguish signed elevation from safe placement checks.
+For map clicks, convert actual map coordinates to world X/Z and verify origin,
+bounds and orientation against landmarks.
+
+Use durable binary storage, validate checksums/size, and cache/bound reads.
+Don't download entire grids for every request or put all grids into phones.
+Missing, corrupt, unsupported and out-of-bounds lookups must fail clearly,
+never silently return zero. Do not request Nitrado or Reaper credentials.
+
+This data knows terrain only, NOT roofs, buildings, bridges, player structures
+or water surfaces. Do not turn terrain checks alone into cheating accusations.
+Respect version/provenance caveats and applicable data redistribution terms.
+
+Before calling this complete, run the included checks or equivalent tests and
+check all four maps from the actual published environment. Show me which tools
+were connected, the test results, and anything still unsupported.
+
+If you cannot accept the full ZIP, inspect the small code-only ZIP first and
+tell me the exact supported way to upload the JSON/F32 pairs into persistent
+storage. Do not claim to have terrain until those real binaries are installed.

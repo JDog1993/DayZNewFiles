@@ -1,0 +1,26 @@
+HANDOFF VERIFICATION — 2026-10-19
+
+Executed:
+  node verify.mjs
+Result: PASS — 37 checks.
+
+Verified:
+- Complete SHA-256 hashes and byte counts for all four actual runtime grids.
+- 19 regression samples generated with the unchanged Reaper source lookup,
+  including map boundaries, fractional coordinates and three console-tested
+  Nasdara coordinates.
+- Both diagonal-bc interpolation branches.
+- Supported map aliases and rejection of unsupported/path-like map names.
+- Blank/null coordinate handling and explicit zero parsing.
+- Invalid/out-of-bounds inputs, missing data and checksum corruption rejection.
+- Placement rejection for a below-sea-level terrain sample.
+
+Executed:
+  node example.mjs nasdara 11933 11163
+Result:
+  groundY = 169.63999938964844
+
+No live orders, settings, provider data or game-server files were changed.
+This verification covers the exported Node implementation and included data.
+It does not verify any Base44 code, storage, map projection or published site.
+Regression samples are not additional independent engine measurements.

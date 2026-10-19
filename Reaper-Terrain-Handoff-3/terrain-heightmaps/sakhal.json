@@ -1,0 +1,21 @@
+{
+  "format": "dayz-height-f32-v1",
+  "map": "sakhal",
+  "gameVersion": "1.30.164014.27 EXPERIMENTAL",
+  "source": "Official Steam DayZ Experimental dedicated server, public build 25319221; engine SurfaceY",
+  "approved": true,
+  "verifiedAt": "2026-10-06T04:47:54.949Z",
+  "maxErrorMeters": 0.04947837117485321,
+  "interpolation": "diagonal-bc",
+  "step": 3.75,
+  "columns": 4097,
+  "rows": 4097,
+  "sha256": "5e80bfef478dc7a923146b80fddbc0c8b8ca30f26eeae959cf6a5fd5784e0392",
+  "verificationChecks": 5000,
+  "coverageRegions": 100,
+  "inGameValidation": {
+    "successfulGroundPlacements": 3,
+    "date": "2026-10-06",
+    "scope": "Selected ground locations on operator test server; not universal stable-version or floor/bridge parity."
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "format": "dayz-height-f32-v1",
+  "map": "nasdara",
+  "gameVersion": "1.30.164078.38",
+  "source": "Official PC Nasdara native SurfaceY export; independent engine checks and owner-confirmed console ground placements",
+  "approved": true,
+  "verifiedAt": "2026-10-19T13:51:38.204Z",
+  "maxErrorMeters": 0.004996032714643661,
+  "interpolation": "diagonal-bc",
+  "step": 4,
+  "columns": 4097,
+  "rows": 4097,
+  "sha256": "f90f50339380bbd0fa4bfe1deadccee675d1e9811ae4c3b7d784ad939ace7206",
+  "verificationChecks": 5000,
+  "coverageRegions": 100,
+  "inGameValidation": {
+    "successfulGroundPlacements": 3,
+    "date": "2026-10-19",
+    "scope": "Selected ground locations on operator test server; not universal stable-version or floor/bridge parity."
+  }
+}

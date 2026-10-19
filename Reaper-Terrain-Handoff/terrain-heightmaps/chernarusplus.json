@@ -1,0 +1,21 @@
+{
+  "format": "dayz-height-f32-v1",
+  "map": "chernarusplus",
+  "gameVersion": "1.30.164014.27 EXPERIMENTAL",
+  "source": "Official Steam DayZ Experimental dedicated server, public build 25319221; engine SurfaceY",
+  "approved": true,
+  "verifiedAt": "2026-10-06T04:47:54.712Z",
+  "maxErrorMeters": 0.06391733805338617,
+  "interpolation": "diagonal-bc",
+  "step": 7.5,
+  "columns": 2049,
+  "rows": 2049,
+  "sha256": "706215b17924ed8dec8212be917cd17736b7730feef6b34a4fe252567da97e07",
+  "verificationChecks": 5000,
+  "coverageRegions": 100,
+  "inGameValidation": {
+    "successfulGroundPlacements": 4,
+    "date": "2026-10-06",
+    "scope": "Selected ground locations on operator test server; not universal stable-version or floor/bridge parity."
+  }
+}
